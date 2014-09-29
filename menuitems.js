@@ -45,7 +45,7 @@ $.fn.menuItems = function(opt) {
             var scrollTop = $(window).scrollTop(), elementOffset = $(menuItems[i]).offset().top, distance = (elementOffset - scrollTop + $(menuItems[i]).outerHeight(true));
             var elementOffset = self.offset().top, distance2 = (elementOffset - scrollTop);
             if (distance > distance2) {
-                var color = (typeof menuItems[i].data('menuitem_color') !== "undefined" ? menuItems[i].data('menuitem_color') : "rgba(255, 255, 255, 1)");
+                var color = (typeof menuItems[i].data('mi-color') !== "undefined" ? menuItems[i].data('mi-color') : "rgba(255, 255, 255, 1)");
                 self.css({
                     'color': color
                 });
@@ -84,7 +84,7 @@ $.fn.menuItems = function(opt) {
     }
 
 
-    $('[data-mi-scrollTo]').on('click', function() {
+    $('[data-mi-scrollTo]').on('click', function(e) {
         if (history.pushState) {
             history.pushState(null, null, '#!' + $(this).attr('data-mi-scrollTo'));
 
@@ -95,6 +95,9 @@ $.fn.menuItems = function(opt) {
         else {
             window.location.hash = '#!' + $(this).data('mi-scrollTo');
         }
+        e.preventDefault();
+        return false;
+        
 
     });
     
@@ -112,3 +115,8 @@ $.fn.menuItems = function(opt) {
 
 };
 
+$(function() {
+	if($("[data-mi-autoinit]").length > 0) {
+		$('[data-mi-init_nonexistent]').menuItems();
+	}
+});

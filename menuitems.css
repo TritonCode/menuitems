@@ -23,6 +23,9 @@
     margin-top: 10px;
 }
 .menuItems .item * {
+    transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -moz-transition: all 0.2s;
     -webkit-transition: all 0.2s;
 }
 .menuItems .item span {
