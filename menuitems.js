@@ -1,11 +1,15 @@
 $.fn.menuItems = function(opt) {
     var self = ($(this).length !== 0 ? $(this) : $('<div class="menuItems"></div>').appendTo('body'));
     var option = {
+        textSpeed: "200ms",
+        itemSpeed: "500ms",
         color: "white",
         borderColor: "white",
         borderWidth: 1,
         activeFill: "rgba(255, 255, 255, 1)",
+        activePadding: "5px",
         inactiveFill: "rgba(255, 255, 255, 0)",
+        inactivePadding: "3px",
         opacity: 1
     };
     $.extend(true, option, opt);
@@ -50,7 +54,9 @@ $.fn.menuItems = function(opt) {
                     'color': color
                 });
                 self.find('.item .circle').css('border', option.borderWidth + "px solid " + color);
+                self.find('.item .circle').css('padding', option.inactivePadding);
                 self.find('.item.active .circle').css('background', color);
+                self.find('.item.active .circle').css('padding', option.activePadding);
                 break;
             }
         }
