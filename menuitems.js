@@ -51,8 +51,8 @@
         };
         var self = ($(this).length !== 0 ? $(this) : $('<div class="menuItems"></div>').appendTo('body'));
         var option = {
-            textSpeed: "200ms",
-            itemSpeed: "500ms",
+            textHoverSpeed: "1500ms",
+            onActivateSpeed: "1500ms",
             color: "white",
             borderColor: "white",
             borderWidth: 1,
@@ -61,7 +61,9 @@
             inactiveFill: "rgba(255, 255, 255, 0)",
             inactivePadding: "3px",
             fontWeight: "bold",
-            opacity: 1
+            opacity: 1,
+            showTextOnActive: true,
+            bounceCircle: true
         };
         $.extend(true, option, opt);
         var menuItems = [];
@@ -76,7 +78,7 @@
             var cur_tab;
 
             for (var i = 0; i < menuItems.length; i++) {
-                if ($(window).scrollTop() > menuItems[i].offset().top - $('.header').outerHeight(true) - 7) {
+                if ($(window).scrollTop() > menuItems[i].offset().top - $('.header').outerHeight(true) - 7 - $(window).height() / 2) {
                     cur_tab = i;
                 }
             }
@@ -90,7 +92,7 @@
 
             self.children('.item').each(function (i) {
                 var box_option = $.extend(true, {}, option);
-                var box_data_option = getDataAttr($(this));
+                var box_data_option = getDataAttr(menuItems[i]);
                 $.extend(true, box_option, box_data_option);
 
                 var scrollTop = $(window).scrollTop(),
@@ -120,10 +122,28 @@
 
         var funcs = {
             update: function () {
-                self.children('.item').each(function () {
+                self.children('.item').each(function (i) {
                     var box_option = $.extend(true, {}, option);
-                    var box_data_option = getDataAttr($(this));
+                    var box_data_option = getDataAttr(menuItems[i]);
                     $.extend(true, box_option, box_data_option);
+
+                    $(this).find('span').css('animation-duration', box_option.textHoverSpeed);
+                    $(this).find('span').css('-webkit-animation-duration', box_option.textHoverSpeed);
+                    $(this).find('span').css('-moz-animation-duration', box_option.textHoverSpeed);
+                    if (box_option.showTextOnActive === true) {
+                        $(this).addClass('mi-showText');
+                    } else {
+                        $(this).removeClass('mi-showText');
+                    }
+
+                    if (box_option.bounceCircle === true) {
+                        $(this).addClass('mi-bounceCircle');
+                        $(this).css('animation-duration', box_option.onActivateSpeed);
+                        $(this).css('-webkit-animation-duration', box_option.onActivateSpeed);
+                        $(this).css('-moz-animation-duration', box_option.onActivateSpeed);
+                    } else {
+                        $(this).removeClass('mi-bounceCircle');
+                    }
 
                     /* 					self.css({
                      'color': 'white'
