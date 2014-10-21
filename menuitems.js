@@ -54,6 +54,7 @@
             textHoverSpeed: "1500ms",
             onActivateSpeed: "1500ms",
             color: "white",
+			activeBorderColor: "white",
             borderColor: "white",
             borderWidth: 1,
             activeFill: "rgba(255, 255, 255, 1)",
@@ -63,7 +64,9 @@
             fontWeight: "bold",
             opacity: 1,
             showTextOnActive: true,
-            bounceCircle: true
+            bounceCircle: true,
+			themes: {},
+			override: false
         };
         $.extend(true, option, opt);
         var menuItems = [];
@@ -76,10 +79,13 @@
 
         var scroll = function () {
             var cur_tab;
+			var theme_option = {};
 
             for (var i = 0; i < menuItems.length; i++) {
-                if ($(window).scrollTop() > menuItems[i].offset().top - $('.header').outerHeight(true) - 7 - $(window).height() / 2) {
+                if ($(window).scrollTop() > menuItems[i].offset().top - $('.header').outerHeight(true) - 7 - ($(window).height() / 2) + (self.height() / 2)) {
                     cur_tab = i;
+					var box_data_option = getDataAttr(menuItems[i]);
+					theme_option = option.themes[box_data_option.themes];
                 }
             }
             if (cur_tab !== prev_tab) {
@@ -89,11 +95,16 @@
                 }
                 self.children('.item:eq(' + cur_tab + ')').addClass('active').siblings().removeClass('active');
             }
-
+			
             self.children('.item').each(function (i) {
-                var box_option = $.extend(true, {}, option);
+				var box_option = $.extend(true, {}, option, theme_option);
                 var box_data_option = getDataAttr(menuItems[i]);
-                $.extend(true, box_option, box_data_option);
+ 				console.log(box_option);
+/* 				if(box_data_option.themes) { */
+/* 					$.extend(true, box_option, box_option.themes[box_data_option.themes]); */
+/* 				} else { */
+					$.extend(true, box_option, box_data_option);
+/* 				} */
 
                 var scrollTop = $(window).scrollTop(),
                         elementOffset = $(menuItems[i]).offset().top,
