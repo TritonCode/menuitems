@@ -1,14 +1,29 @@
 /* ==========================================================================
    Right Navi
    ========================================================================== */
+.mi-container {
+/*  	-webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+    transform: translateZ(0);
+	width: 100%; */
+}
 
 .menuItems {
-	position: fixed;
-	right: 15px;
+ 	right: 15px;
 	padding: 0 10px 0 0;
+	z-index: 1;
+}
+
+.mi-fixed {
+	position: fixed;
 	top: 50%;
-	z-index: 10;
-	color: white;
+}
+
+.mi-absolute {
+	position: absolute;
+	transition: all 0.2s;
 }
 
 .menuItems .item, .owl-carousel .owl-dot span {
@@ -53,7 +68,7 @@
 	position: relative;
 }
 
-.menuItems .item .circle, .owl-carousel .owl-dot span {
+.menuItems .item .circle {
 	height: 0px !important;
 	width: 0px !important;
     /*float: right;*/
@@ -62,11 +77,6 @@
 	border: 2px solid white;
 	-webkit-transition: all 0.2s;
 	opacity: 1 !important;
-}
-
-.owl-carousel .owl-dot.active span {
-	background-color: rgba(250, 255, 255, 1) !important;
-    /*filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffffff', endColorstr='#ffffffff');  IE */
 }
 
 @media only screen and (max-width: 1170px) {
