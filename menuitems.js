@@ -16,7 +16,7 @@
 
 	}());
 	$.fn.menuItems = function(opt) {
-		
+
 		var getDataAttr = function(element) {
 			var data_option = {};
 			//        var keys = Object.keys(option);
@@ -65,21 +65,21 @@
 			}
 			return;
 		};
-		
+
 		var self = $(this);
 		self.addClass('mi-container');
 		var item_container = $('<div class="menuItems"></div>').appendTo(self);
-		
-		var menuItems = [];
-		var isBody = self.is('body');
 
-		
+		var menuItems = [];
+		var isBody = self.is('body') || (self.outerHeight() >= $(document).height() && self.outerWidth() >= $(document).width());
+
+
 		var option = {
 			items: [],
 			listContainerAnimationSpeed: "750ms",
 			textHoverSpeed: "1500ms",
 			onActivateSpeed: "1500ms",
-			color: "white",
+			color: "lightgrey",
 			activeBorderColor: "white",
 			borderColor: "white",
 			borderWidth: 1,
@@ -88,11 +88,19 @@
 			inactiveFill: "rgba(255, 255, 255, 0)",
 			inactivePadding: "3px",
 			fontWeight: "bold",
-			opacity: 1,
+			/* 			opacity: 1, */
 			showTextOnActive: true,
-			bounceCircle: true,
+			bounceButton: true,
 			themes: {},
-			override: false,
+			screenSizes: [{
+				maxHeight: 99999,
+				minHeight: 0,
+				maxWidth: 99999,
+				minWidth: 0,
+				theme: 'default'
+			}],
+
+			/* 			override: false, */
 			hierarchical: true
 		};
 		$.extend(true, option, opt);
@@ -127,14 +135,14 @@
 				$.extend(true, box_option, box_data_option);
 				/* 				} */
 
-				
-				var	elementOffset = $(menuItems[i]).offset().top,
+
+				var elementOffset = $(menuItems[i]).offset().top,
 					distance = (elementOffset - scrollTop + $(menuItems[i]).outerHeight(true));
 				var elementOffset = item_container.offset().top,
 					distance2 = (elementOffset - scrollTop);
-				
-				if(option.hierarchical === true && isBody === false) {
-					item_container.css('top', scrollTop + $(window).height()/2 - item_container.height()/2);
+
+				if (option.hierarchical === true && isBody === false) {
+					item_container.css('top', scrollTop + $(window).height() / 2 - item_container.height() / 2);
 				}
 
 				$(this).css({
@@ -149,6 +157,12 @@
 
 		var resize = function() {
 			item_container.css('margin-top', -(item_container.outerHeight(true) / 2));
+			for (var i = 0; i < option.screenSizes.length; i++) {
+				if (($(window).height() < option.screenSizes[i].maxHeight && $(window).height() > option.screenSizes[i].minHeight) && ($(window).width() < option.screenSizes[i].maxWidth && $(window).width() > option.screenSizes[i].minWidth)) {
+					var box_option = $.extend(true, {}, option, option.themes[option.screenSizes[i].theme]);
+					console.log(box_option);
+				}	
+			}
 		};
 
 		var funcs = {
@@ -156,26 +170,26 @@
 				opt = (typeof opt !== "undefined" ? opt : {});
 				option = $.extend(true, option, opt);
 				menuItems = [];
-				
+
 				item_container.empty();
 				$('.menuItem').each(function() {
 					menuItems.push($(this));
 				});
-				
+
 				item_container.css('transition', "all " + option.listContainerAnimationSpeed);
 				item_container.css('-webkit-transition', "all " + option.listContainerAnimationSpeed);
 				item_container.css('-moz-transition', "all " + option.listContainerAnimationSpeed);
-				
-				if(option.hierarchical === true && isBody === false) {
+
+				if (option.hierarchical === true && isBody === false) {
 					item_container.addClass('mi-absolute').removeClass('mi-fixed');
 				} else {
 					item_container.addClass('mi-fixed').removeClass('mi-absolute');
 				}
-				
+
 				for (var i = 0; i < menuItems.length; i++) {
 					item_container.append($("<div class='item' data-mi-scrollTo='" + menuItems[i].attr('id') + "'><div class='circle'></div><span>" + menuItems[i].data('mi-title') + "</span></div>"));
 				}
-				
+
 				item_container.children('.item').each(function(i) {
 					var box_option = $.extend(true, {}, option);
 					var box_data_option = getDataAttr(menuItems[i]);
@@ -190,13 +204,13 @@
 						$(this).removeClass('mi-showText');
 					}
 
-					if (box_option.bounceCircle === true) {
-						$(this).addClass('mi-bounceCircle');
+					if (box_option.bounceButton === true) {
+						$(this).addClass('mi-bounceButton');
 						$(this).css('animation-duration', box_option.onActivateSpeed);
 						$(this).css('-webkit-animation-duration', box_option.onActivateSpeed);
 						$(this).css('-moz-animation-duration', box_option.onActivateSpeed);
 					} else {
-						$(this).removeClass('mi-bounceCircle');
+						$(this).removeClass('mi-bounceButton');
 					}
 
 					/* 					item_container.css({
@@ -210,7 +224,6 @@
 
 
 		$(document).on('click', '[data-mi-scrollTo]', function(e) {
-			console.log('fe');
 			if (history.pushState) {
 				history.pushState(null, null, '#!' + $(this).attr('data-mi-scrollTo'));
 
