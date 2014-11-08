@@ -108,7 +108,7 @@
 
 @media only screen and (max-width: 1170px) {
 	.menuItems {
-		display: none;
+		/*display: none;*/
 	}
 }
 
