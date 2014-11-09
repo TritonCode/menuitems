@@ -47,7 +47,9 @@
 	position: relative;
 	margin-top: 10px;
 }
-
+.menuItems .item:first-child {
+    margin-top: 0;
+}
 .mi-position_right .item {
 	text-align: right;
 }

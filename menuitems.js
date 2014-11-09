@@ -136,7 +136,7 @@
                 var scrollTop = $(window).scrollTop();
 
                 for (var i = 0; i < menuItems.length; i++) {
-                    if (scrollTop > menuItems[i].offset().top - final_option.offsetTop - ($(window).height() / 2) + (item_container.height() / 2)) {
+                    if (scrollTop > menuItems[i].offset().top + final_option.offsetTop - ($(window).height() / 2) + (item_container.height() / 2)) {
                         cur_tab = i;
                     }
                 }
@@ -151,12 +151,21 @@
                     item_container.children('.item:eq(' + cur_tab + ')').addClass('active').siblings().removeClass('active');
                 }
 
-                if (final_option.hierarchical === true && isBody === false) {
-                    var elementOffset = self.offset().top;
-                    var elementHeight = self.outerHeight(true);
+                if (item_container.hasClass('mi-fixed') == false) {
                     var windowOffset = $(window).height() / 2;
+                    var elementOffset = self.offset().top;
+                    var lastElementBottom = menuItems[menuItems.length-1].offset().top + menuItems[menuItems.length-1].height()  - elementOffset;
+                    var firstElementTop = menuItems[0].offset().top - elementOffset;                    
+                    
                     var absolute = scrollTop - elementOffset + windowOffset;
-                    absolute = (((absolute + item_container.height() > elementHeight ? elementHeight - item_container.height() : absolute) < 0) ? 0 : absolute);
+                    if(absolute + item_container.height() > lastElementBottom) {
+                        absolute = lastElementBottom - item_container.height();
+                    } else if(absolute < firstElementTop) {
+                        absolute = firstElementTop;
+                    }
+//                    console.log(absolute);
+//                    console.log(firstElementTop);
+//                    console.log(lastElementBottom);
                     item_container.css('top', absolute);
                 }
 
@@ -317,7 +326,8 @@
                     $.scrollTo($("#" + element), 800, {
                         onAfter: function () {
                             option.onAfterScroll(element);
-                        }
+                        },
+                        offset: -option.offsetTop
                     });
                 }
             };
