@@ -136,7 +136,7 @@
                 var scrollTop = $(window).scrollTop();
 
                 for (var i = 0; i < menuItems.length; i++) {
-                    if (scrollTop > menuItems[i].offset().top + final_option.offsetTop - ($(window).height() / 2) + (item_container.height() / 2)) {
+                    if (scrollTop > menuItems[i].offset().top - final_option.offsetTop - ($(window).height() / 2) + (item_container.height())) {
                         cur_tab = i;
                     }
                 }
