@@ -88,6 +88,7 @@
                 textHoverSpeed: "1500ms",
                 onActivateSpeed: "1500ms",
                 color: "lightgrey",
+                changeUrl: true,
                 activeBorderColor: "",
                 inactiveBorderColor: "",
                 borderColor: "white",
@@ -296,15 +297,19 @@
 
 
             $(document).on('click', '[data-mi-scrollTo]', function (e) {
-                if (history.pushState) {
-                    history.pushState(null, null, '#!' + $(this).attr('data-mi-scrollTo'));
+                if(option.changeUrl === true) {
+                    if (history.pushState) {
+                        history.pushState(null, null, '#!' + $(this).attr('data-mi-scrollTo'));
 
-                    var element = $(this);
-                    $('body').removeClass('sidebar_open');
-                    scrollTo(element.attr('data-mi-scrollTo'));
-                } else {
-                    window.location.hash = '#!' + $(this).data('mi-scrollTo');
+                    } else {
+
+                            window.location.hash = '#!' + $(this).data('mi-scrollTo');
+                    }
                 }
+                var element = $(this);
+                $('body').removeClass('sidebar_open');
+                scrollTo(element.attr('data-mi-scrollTo'));
+                
                 e.preventDefault();
                 return false;
             });
