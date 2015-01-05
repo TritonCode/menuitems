@@ -10,7 +10,7 @@
 	width: 100%; */
 }
 
-.mi-container * {
+.menuItems * {
 	box-sizing: border-box;
 	font-weight: inherit;
 	font-family: inherit;
